@@ -116,8 +116,6 @@ let casa=(casa)=>{
             let li = document.createElement("li");
             li.className="list-group-item"
             var p = document.createElement("p");
-            var img = document.createElement("img");
-            img.src=`${data[i].image}`
             contenido = `${data[i].name}`;
             p.appendChild(document.createTextNode(contenido));
             document.querySelector(`#${casa}`).appendChild(li).appendChild(p);
