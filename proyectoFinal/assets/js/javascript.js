@@ -1,7 +1,7 @@
 const urlPersonajes='https://fedeperin-harry-potter-api.herokuapp.com/personajes'
 const urlHechizos='https://fedeperin-harry-potter-api.herokuapp.com/hechizos'
 const urlLibros ="https://fedeperin-harry-potter-api.herokuapp.com/libros"
-const urlCasas="https://hp-api.herokuapp.com/api/characters/house/"
+const urlCasas="https://hp-api.herokuapp.com/api/characters"
 
 //funciones personajes
 let getPersonajesPrincipales=()=>{
@@ -9,22 +9,14 @@ let getPersonajesPrincipales=()=>{
    .then((res) => res.json())
    .then((data) => {
         data.forEach(index =>{
-            let divPersonajes= document.getElementById("personajes")
-            var div = document.createElement('div');
-            div.id = index.apodo;
-            div.className="col-lg-3 col-md-6 d-flex align-items-stretch"
-            div.innerHTML=`
-            <div class="member" data-aos="fade-up" data-aos-delay="100">
-                <div class="member-img">
-                    <img src="${index.imagen}" class="img-fluid" alt="">
-                </div>
-                <div class="member-info">
-                    <h4>${index.personaje}</h4>
-                    <span>${index.casaDeHogwarts}</span>
-                </div>
-            </div>
-            `
-            divPersonajes.appendChild(div);
+            let template = document.querySelector("#personajes-template").content;
+            let clone = template.cloneNode(true);
+            let contenedor = document.querySelector("#personajes");
+            clone.querySelector(".img-fluid").setAttribute("src", index.imagen);
+            clone.querySelector(".dot").innerText = index.personaje;
+            clone.querySelector(".s-casa").innerText = index.casaDeHogwarts;
+            contenedor.appendChild(clone);
+            clickHechizos();
         });
     })
     .catch((e) => console.log(e))
@@ -36,18 +28,15 @@ let getHechizos=()=>{
     .then((res) => res.json())
     .then((data) => {
         data.forEach(index =>{
-            let divPersonajes= document.getElementById("hechizos")
-            var div = document.createElement('div');
-            div.className="col-lg-4 col-md-6 d-flex align-items-stretch";
-            div.dataAos ="zoom-in";
-            div.innerHTML=`
-                <div class="icon-box click" id="${index.hechizo}">
-                <div id="${index.hechizo}" class="icon click"><i id="${index.hechizo}" class="bi bi-brush"></i></div>
-                    <p><strong id="${index.hechizo}">${index.hechizo}</strong></p>
-                    <p id="uso-${index.hechizo}"></p>
-                </div>
-            `
-            divPersonajes.appendChild(div);
+            let template = document.querySelector("#hechizos-template").content;
+            let clone = template.cloneNode(true);
+            let contenedor = document.querySelector("#hechizos");
+            clone.querySelector(".click").setAttribute("id", index.hechizo);
+            clone.querySelector(".icon").setAttribute("id", index.hechizo);
+            clone.querySelector(".bi-brush").setAttribute("id", index.hechizo);
+            clone.querySelector(".p-name").innerText = index.hechizo;
+            clone.querySelector(".uso").setAttribute("id", `uso${index.hechizo}`);
+            contenedor.appendChild(clone);
         });
         clickHechizos();
     })
@@ -69,7 +58,7 @@ let mostrarUso=(nombreHechizo)=>{
     .then((data) => {
         data.forEach(index =>{
             if(index.hechizo == nombreHechizo){
-                document.getElementById(`uso-${index.hechizo}`).innerHTML= index.uso
+                document.getElementById(`uso${index.hechizo}`).innerHTML= index.uso
             }
         });
     })
@@ -83,23 +72,14 @@ let getLibros=()=>{
     .then((res) => res.json())
     .then((data) => {
         data.forEach(index =>{
-            let divPersonajes= document.getElementById("row-libros")
-            var div = document.createElement('div');
-            div.className="col-lg-4 col-md-6 d-flex align-items-stretch";
-            div.innerHTML=`
-            <div class="member" data-aos="fade-up" data-aos-delay="100">
-                <div class="member-img">
-                    <img src="assets/img/librosPortada/libro${index.id}.jpg" class="img-fluid" alt="">
-                </div>
-                <div class="member-info">
-                    <h4>${index.titulo_original}</h4>
-                    <span>${index.autora} - ${index.fecha_de_lanzamiento}</span></br>
-                    <span>${index.descripcion}</span>
-                </div>
-            </div>
-
-            `
-            divPersonajes.appendChild(div);
+            let template = document.querySelector("#libros-template").content;
+            let clone = template.cloneNode(true);
+            let contenedor = document.querySelector("#row-libros");
+            clone.querySelector(".librosimg").setAttribute("src", `assets/img/librosPortada/libro${index.id}.jpg`);
+            clone.querySelector(".libroNombre").innerText = index.libro;
+            clone.querySelector(".autora").innerText = `${index.autora} - ${index.fecha_de_lanzamiento}`;
+            clone.querySelector(".descripcion").innerText = index.descripcion;
+            contenedor.appendChild(clone);
         });
         clickHechizos();
     })
@@ -112,7 +92,7 @@ let casa=(casa)=>{
     fetch(uri)
     .then((res) => res.json())
     .then((data) => {
-        for (var i=0; data.length; i++){
+        for (var i=0; i < data.length; i++){
             let li = document.createElement("li");
             li.className="list-group-item"
             var p = document.createElement("p");
@@ -123,6 +103,48 @@ let casa=(casa)=>{
     })
     .catch((e) => console.log(e))
 }
+let getCasaPersonaje=()=>{
+    let getPersonaje=document.getElementById("search").value;
+    fetch(urlCasas)
+    .then((res) => res.json())
+    .then((data) => {
+        let search=toUppercase(getPersonaje)
+        let casas= document.getElementById("divs-casas");
+        var bandera = 0;
+        casas ? casas.remove() : console.log("no existe")
+        for (var i=0; i < data.length; i++){
+            if ((data[i].name).includes(search.join(" "))) { 
+                let template = document.querySelector("#casas-template").content;
+                let clone = template.cloneNode(true);
+                let contenedor = document.querySelector("#casasAlumnos");
+                clone.querySelector(".casas-personajes").setAttribute("id", "divs-casas");
+                clone.querySelector(".img-fluid").setAttribute("src", data[i].image);
+                clone.querySelector(".dot").innerText = data[i].house;
+                clone.querySelector(".s-casa").innerText =data[i].name;
+                contenedor.appendChild(clone);
+                bandera =1;
+            }
+        }
+        if(bandera==0){
+            let template = document.querySelector("#casas-template").content;
+            let clone = template.cloneNode(true);
+            let contenedor = document.querySelector("#casasAlumnos");
+            clone.querySelector(".casas-personajes").setAttribute("id", "divs-casas");
+            clone.querySelector(".dot").innerText = "Personaje no encontrado :(";
+            contenedor.appendChild(clone);
+        }
+    })
+}
+
+let toUppercase=(getPersonaje)=>{
+    const palabras = getPersonaje.split(" ");
+    for (let i = 0; i < palabras.length; i++) {
+        palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+    }
+    return palabras;
+}
+
+
 getPersonajesPrincipales(urlPersonajes);
 getHechizos(urlHechizos);
 getLibros();

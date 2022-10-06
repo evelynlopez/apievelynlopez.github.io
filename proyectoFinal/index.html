@@ -114,6 +114,19 @@
             </div>
     
             <div class="row" id="personajes">
+              <template id="personajes-template">
+                <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="100">
+                    <div class="member-img">
+                        <img src="" class="img-fluid" alt="">
+                    </div>
+                    <div class="member-info">
+                        <h4 class="dot"></h4>
+                        <span class="s-casa"></span>
+                    </div>
+                  </div>
+                </div>
+            </template>
             </div>
     
           </div>
@@ -128,6 +141,20 @@
           <p>Conoce la saga de esta mágica aventura</p>
         </div>
         <div class="row" id="row-libros">
+          <template id="libros-template">
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+              <div class="member" data-aos="fade-up" data-aos-delay="100">
+                <div class="member-img">
+                    <img class="img-fluid librosimg" alt="">
+                </div>
+                <div class="member-info">
+                    <h4 class="libroNombre"></h4>
+                    <span class="autora"></span></br>
+                    <span class="descripcion"></span>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </section>
@@ -135,16 +162,15 @@
     <!-- ======= Cta Section ======= -->
           <section id="cta" class="cta">
             <div class="container" data-aos="zoom-in">
-      
-              <div class="text-center">
-                <h3>casa Hogwarts</h3>
-                <p>Es hora de conocer la prueba del Sombrero Seleccionador de Casas de Hogwarts</p>
-                <a class="cta-btn" href="https://www.idrlabs.com/es/casa-de-hogwarts/prueba.php">Realizar test</a>
-              </div>
+                <div class="text-center">
+                  <h3>casa Hogwarts</h3>
+                  <p>Es hora de conocer la prueba del Sombrero Seleccionador de Casas de Hogwarts</p>
+                  <a class="cta-btn" href="https://www.idrlabs.com/es/casa-de-hogwarts/prueba.php">Realizar test</a>
+                </div>
       
             </div>
           </section><!-- End Cta Section -->
-    <!-- ======= Services Section ======= -->
+    <!-- ======= Hechizos Section ======= -->
     <section id="services" class="services">
       <div class="container" data-aos="fade-up">
 
@@ -154,50 +180,52 @@
         </div>
 
         <div class="row" id="hechizos">
+          <template id="hechizos-template">
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in">
+              <div class="icon-box click">
+                <div class="icon click "><i  class="bi bi-brush click"></i></div>
+                <p><strong class=" p-name click"></strong></p>
+                <p class="uso"></p>
+              </div>
+            </div>
+          </template>
         </div>
 
       </div>
-  </section><!-- End Services Section -->
+  </section><!-- End Hechizos Section -->
   <section id="lista" class="d-flex align-items-center justify-content-center"></section>
       <div class="container" data-aos="fade-up">
         <div class="section-title">
           <h2>Alumnos</h2>
           <p>Conoce a que casa pertenecía tu personaje favorito</p>
         </div>
-          <div class="container" data-aos="fade-up">
-            <div class="row gy-4 justify-content-center" data-aos="zoom-in" data-aos-delay="250">
-              <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                  <h3><a href="javascript:casa('gryffindor')">GRYFFINDOR</a></h3>
+        <div class="container container-img" data-aos="fade-up">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+            <div class="input-group">
+              <input type="search" id="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+              <button type="button" class="btn btn btn-outline-warning" onclick="getCasaPersonaje()">search</button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5" id="casasAlumnos">
+          <template id="casas-template">
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch casas-personajes">
+              <div class="member" data-aos="fade-up" data-aos-delay="100">
+                <div class="member-img">
+                    <img src="" class="img-fluid" alt="">
                 </div>
-                <ul class="list-group" id="gryffindor">
-                </ul>
-              </div>
-              <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                  <h3><a href="javascript:casa('slytherin')">SLYTHERIN</a></h3>
-                  <ul class="list-group" id="slytherin">
-                  </ul>
-                </div>
-              </div>
-              <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                  <h3><a href="javascript:casa('hufflepuff')">HUFFLEPUFF</a></h3>
-                  <ul class="list-group" id="hufflepuff">
-                  </ul>
-                </div>
-              </div>
-              <div class="col-xl-2 col-md-4">
-                <div class="icon-box">
-                  <h3><a href="javascript:casa('ravenclaw')">RAVENCLAW</a></h3>
-                  <ul class="list-group" id="ravenclaw">
-                  </ul>
+                <div class="member-info text-center">
+                    <h4 class="dot"></h4>
+                    <span class="s-casa"></span>
                 </div>
               </div>
             </div>
-          </div>
+        </template>
+      </div>
       </div>
   </section>
+  <br>
+  <br>
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="footer-top">
