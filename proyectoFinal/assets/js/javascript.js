@@ -1,11 +1,9 @@
-const urlPersonajes='https://fedeperin-harry-potter-api.herokuapp.com/personajes'
-const urlHechizos='https://fedeperin-harry-potter-api.herokuapp.com/hechizos'
-const urlLibros ="https://fedeperin-harry-potter-api.herokuapp.com/libros"
+const uri='https://fedeperin-harry-potter-api.herokuapp.com/'
 const urlCasas="https://hp-api.herokuapp.com/api/characters"
 
-//funciones personajes
-let getPersonajesPrincipales=()=>{
-    fetch(urlPersonajes)
+//obtiene todos los personajes de la api
+let getPersonajesPrincipales=(tipo)=>{
+    fetch(`${uri}${tipo}`)
    .then((res) => res.json())
    .then((data) => {
         data.forEach(index =>{
@@ -14,7 +12,6 @@ let getPersonajesPrincipales=()=>{
             let contenedor = document.querySelector("#personajes");
             clone.querySelector(".img-fluid").setAttribute("src", index.imagen);
             clone.querySelector(".dot").innerText = index.personaje;
-            clone.querySelector(".s-casa").innerText = index.casaDeHogwarts;
             contenedor.appendChild(clone);
             clickHechizos();
         });
@@ -22,9 +19,9 @@ let getPersonajesPrincipales=()=>{
     .catch((e) => console.log(e))
 }
 
-//funciones hechizos
-let getHechizos=()=>{
-    fetch(urlHechizos)
+//funcion obtiene todos los hechizos de la api
+let getHechizos=(tipo)=>{
+    fetch(`${uri}${tipo}`)
     .then((res) => res.json())
     .then((data) => {
         data.forEach(index =>{
@@ -42,18 +39,18 @@ let getHechizos=()=>{
     })
     .catch((e) => console.log(e))
 }
-
+//activa evento listenner para cuando se le de click a un hechizo
 let clickHechizos=()=>{
     document.querySelectorAll(".click").forEach(el => {
         el.addEventListener("click", e => {
             const id = e.target.getAttribute("id");
-            mostrarUso(id)
+            mostrarUso(id,"hechizos")
         });
     });
 }
-
-let mostrarUso=(nombreHechizo)=>{
-    fetch(urlHechizos)
+//muestra el uso que tiene cada hechizo al darl click sobre el
+let mostrarUso=(nombreHechizo, tipo)=>{
+    fetch(`${uri}${tipo}`)
     .then((res) => res.json())
     .then((data) => {
         data.forEach(index =>{
@@ -66,9 +63,9 @@ let mostrarUso=(nombreHechizo)=>{
 }
 
 
-//funcion libros
-let getLibros=()=>{
-    fetch(urlLibros)
+//funcion obtiene todos los libros de la api
+let getLibros=(tipo)=>{
+    fetch(`${uri}${tipo}`)
     .then((res) => res.json())
     .then((data) => {
         data.forEach(index =>{
@@ -87,22 +84,7 @@ let getLibros=()=>{
 }
 
 
-let casa=(casa)=>{
-    uri=`${urlCasas}${casa}`;
-    fetch(uri)
-    .then((res) => res.json())
-    .then((data) => {
-        for (var i=0; i < data.length; i++){
-            let li = document.createElement("li");
-            li.className="list-group-item"
-            var p = document.createElement("p");
-            contenido = `${data[i].name}`;
-            p.appendChild(document.createTextNode(contenido));
-            document.querySelector(`#${casa}`).appendChild(li).appendChild(p);
-        }
-    })
-    .catch((e) => console.log(e))
-}
+//obtiene información de la api de acuerdo al input del buscador
 let getCasaPersonaje=()=>{
     let getPersonaje=document.getElementById("search").value;
     fetch(urlCasas)
@@ -119,8 +101,12 @@ let getCasaPersonaje=()=>{
                 let contenedor = document.querySelector("#casasAlumnos");
                 clone.querySelector(".casas-personajes").setAttribute("class", "col-lg-3 col-md-6 d-flex align-items-stretch casas-personajes divs-casas");
                 clone.querySelector(".img-fluid").setAttribute("src", data[i].image);
-                data[i].house != ""? clone.querySelector(".dot").innerText = data[i].house  : clone.querySelector(".dot").innerText = "No estudió en Hogwarts";
+                data[i].house != ""? clone.querySelector(".dot").innerText = data[i].house  : clone.querySelector(".dot").innerText = "Desconocido";
                 clone.querySelector(".s-casa").innerText =data[i].name;
+                data[i].dateOfBirth != "" ? clone.querySelector(".birthday").innerText = `fecha de nacimiento: ${data[i].dateOfBirth}`: clone.querySelector(".birthday").innerText = `fecha de nacimiento: desconocido`;
+                data[i].patronus !="" ? clone.querySelector(".patronus").innerText = `patronus: ${data[i].patronus}`:clone.querySelector(".patronus").innerText = `patronus: desconocido`;
+                data[i].alive ? clone.querySelector(".alive").innerText = "Viv@" : clone.querySelector(".alive").innerText ="Murió";
+                data[i].ancestry != "" ? clone.querySelector(".ancestry").innerText = `Ancestros: ${data[i].ancestry}` : clone.querySelector(".ancestry").innerText ="Ancestros: desconocidos";
                 contenedor.appendChild(clone);
                 bandera =1;
             }
@@ -135,7 +121,7 @@ let getCasaPersonaje=()=>{
         }
     })
 }
-
+//convierte la primera letra de cada palabra en mayuscula
 let toUppercase=(getPersonaje)=>{
     const palabras = getPersonaje.split(" ");
     for (let i = 0; i < palabras.length; i++) {
@@ -144,7 +130,7 @@ let toUppercase=(getPersonaje)=>{
     return palabras;
 }
 
-
-getPersonajesPrincipales(urlPersonajes);
-getHechizos(urlHechizos);
-getLibros();
+//llamado de las funciones de las apis
+getPersonajesPrincipales("personajes");
+getHechizos("hechizos");
+getLibros("libros");

@@ -1596,3 +1596,6 @@ img#vs {
 input.form-control.rounded {
   max-width: 400px;
 }
+div#casasAlumnos img {
+  width: 400px!important;
+}
