@@ -108,18 +108,18 @@ let getCasaPersonaje=()=>{
     fetch(urlCasas)
     .then((res) => res.json())
     .then((data) => {
-        let search=toUppercase(getPersonaje)
-        let casas= document.getElementById("divs-casas");
+        let search=toUppercase(getPersonaje.toLowerCase())
+        let casas= document.getElementsByClassName("divs-casas");
         var bandera = 0;
-        casas ? casas.remove() : console.log("no existe")
+        casas ? [].forEach.call(document.querySelectorAll(".divs-casas"), function(regla){regla.parentNode.removeChild(regla);}) : console.log("no existe")
         for (var i=0; i < data.length; i++){
             if ((data[i].name).includes(search.join(" "))) { 
                 let template = document.querySelector("#casas-template").content;
                 let clone = template.cloneNode(true);
                 let contenedor = document.querySelector("#casasAlumnos");
-                clone.querySelector(".casas-personajes").setAttribute("id", "divs-casas");
+                clone.querySelector(".casas-personajes").setAttribute("class", "col-lg-3 col-md-6 d-flex align-items-stretch casas-personajes divs-casas");
                 clone.querySelector(".img-fluid").setAttribute("src", data[i].image);
-                clone.querySelector(".dot").innerText = data[i].house;
+                data[i].house != ""? clone.querySelector(".dot").innerText = data[i].house  : clone.querySelector(".dot").innerText = "No estudió en Hogwarts";
                 clone.querySelector(".s-casa").innerText =data[i].name;
                 contenedor.appendChild(clone);
                 bandera =1;
@@ -129,7 +129,7 @@ let getCasaPersonaje=()=>{
             let template = document.querySelector("#casas-template").content;
             let clone = template.cloneNode(true);
             let contenedor = document.querySelector("#casasAlumnos");
-            clone.querySelector(".casas-personajes").setAttribute("id", "divs-casas");
+            clone.querySelector(".casas-personajes").setAttribute("class", "col-lg-3 col-md-6 d-flex align-items-stretch casas-personajes divs-casas");
             clone.querySelector(".dot").innerText = "Personaje no encontrado :(";
             contenedor.appendChild(clone);
         }
